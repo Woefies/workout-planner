@@ -10,7 +10,7 @@
 
                     <div class="card-body">
                         <p>{{ $workout->description }}</p>
-                        <a href="{{ route('workout.index') }}" class="btn btn-primary">Back</a>
+                        <a href="{{ route('workouts.index') }}" class="btn btn-primary">Back</a>
                     </div>
                 </div>
             </div>

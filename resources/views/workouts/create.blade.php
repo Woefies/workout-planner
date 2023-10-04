@@ -13,7 +13,7 @@
 
     <!-- create a new workout -->
     <h1>Create a new workout</h1>
-    <form action="{{ route('workout.store') }}" method="POST">
+    <form action="{{ route('workouts.store') }}" method="POST">
         @csrf
         <div class="form-group">
             <label for="name">Name</label>
@@ -41,5 +41,5 @@
     </form>
 
     <!-- return to index -->
-    <a href="{{ route('workout.index') }}" class="btn btn-primary">Back</a>
+    <a href="{{ route('workouts.index') }}" class="btn btn-primary">Back</a>
 @endsection

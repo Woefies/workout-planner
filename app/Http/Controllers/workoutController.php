@@ -46,7 +46,7 @@ class workoutController extends Controller
         $workout->weight = $request->weight;
         $workout->save();
 
-        return redirect()->route('workout.index');
+        return redirect()->route('workouts.index');
     }
 
     /**
@@ -80,6 +80,6 @@ class workoutController extends Controller
      */
     public function destroy(workout $workout)
     {
-        //
+        $workout->delete();
     }
 }

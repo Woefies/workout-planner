@@ -6,7 +6,7 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8">
-                <a href="{{ route('workout.create') }}" class="btn btn-primary">Create Workout</a>
+                <a href="{{ route('workouts.create') }}" class="btn btn-primary">Create Workout</a>
             </div>
         </div>
 
@@ -20,7 +20,7 @@
 
                         <div class="card-body">
                             <p>{{ $workout->description }}</p>
-                            <a href="{{ route('workout.show', $workout->id) }}" class="btn btn-primary">View</a>
+                            <a href="{{ route('workouts.show', $workout->id) }}" class="btn btn-primary">View</a>
                         </div>
                     </div>
                 @endforeach
