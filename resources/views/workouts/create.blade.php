@@ -13,7 +13,8 @@
 
     <!-- create a new workout -->
     <h1>Create a new workout</h1>
-    <form action="/{{ route('workout.store') }}" method="POST">
+    <form action="{{ route('workout.store') }}" method="POST">
+        @csrf
         <div class="form-group">
             <label for="name">Name</label>
             <input type="text" name="name" value="{{ old('name') }}" class="form-control">

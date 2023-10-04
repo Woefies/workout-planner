@@ -30,7 +30,23 @@ class workoutController extends Controller
      */
     public function store(Request $request)
     {
+         $request->validate([
+            'name' => 'required',
+            'description' => 'required',
+             'sets' => 'required',
+             'reps' => 'required',
+             'weight' => 'required'
+        ]);
 
+        $workout = new Workout();
+        $workout->name = $request->name;
+        $workout->description = $request->description;
+        $workout->sets = $request->sets;
+        $workout->reps = $request->reps;
+        $workout->weight = $request->weight;
+        $workout->save();
+
+        return redirect()->route('workout.index');
     }
 
     /**
