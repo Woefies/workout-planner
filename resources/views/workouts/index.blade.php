@@ -21,6 +21,15 @@
                         <div class="card-body">
                             <p>{{ $workout->description }}</p>
                             <a href="{{ route('workouts.show', $workout->id) }}" class="btn btn-primary">View</a>
+                            <!-- edit button -->
+                            <a href="{{ route('workouts.edit', $workout->id) }}" class="btn btn-primary">Edit</a>
+                            <!-- delete button -->
+                            <form action="{{ route('workouts.destroy', $workout->id) }}" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger">Delete</button>
+                            </form>
+
                         </div>
                     </div>
                 @endforeach

@@ -38,13 +38,7 @@ class workoutController extends Controller
              'weight' => 'required'
         ]);
 
-        $workout = new Workout();
-        $workout->name = $request->name;
-        $workout->description = $request->description;
-        $workout->sets = $request->sets;
-        $workout->reps = $request->reps;
-        $workout->weight = $request->weight;
-        $workout->save();
+        Workout::create($request->all());
 
         return redirect()->route('workouts.index');
     }
@@ -64,7 +58,9 @@ class workoutController extends Controller
      */
     public function edit(workout $workout)
     {
-        //
+        return view('workouts.edit', [
+            'workout' => $workout,
+        ]);
     }
 
     /**
@@ -72,7 +68,18 @@ class workoutController extends Controller
      */
     public function update(Request $request, workout $workout)
     {
-        //
+        $request->validate([
+            'name' => 'required',
+            'description' => 'required',
+             'sets' => 'required',
+             'reps' => 'required',
+             'weight' => 'required'
+        ]);
+
+        $workout = Workout::find($workout->id);
+        $workout->update($request->all());
+
+        return redirect()->route('workouts.index');
     }
 
     /**
@@ -81,5 +88,6 @@ class workoutController extends Controller
     public function destroy(workout $workout)
     {
         $workout->delete();
+        return redirect()->route('workouts.index');
     }
 }
