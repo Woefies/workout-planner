@@ -8,6 +8,13 @@ use Illuminate\Http\Request;
 
 class UserWorkoutController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth')->except(['index', 'show']);
+
+    }
+
+
     /**
      * Display a listing of the resource.
      */
@@ -24,7 +31,10 @@ class UserWorkoutController extends Controller
      */
     public function create()
     {
-        return view('user_workouts.create');
+        return view('user_workouts.create', [
+            'workouts' => Workout::all(),
+        ]
+        );
     }
 
     /**
@@ -40,6 +50,7 @@ class UserWorkoutController extends Controller
             ]);
 
             User_workout::create($request->all());
+
 
             return redirect()->route('user_workouts.index');
     }

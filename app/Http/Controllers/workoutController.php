@@ -7,6 +7,13 @@ use Illuminate\Http\Request;
 
 class workoutController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('auth')->except(['index', 'show']);
+
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -79,7 +86,7 @@ class workoutController extends Controller
         $workout = Workout::find($workout->id);
         $workout->update($request->all());
 
-        return redirect()->route('workouts.index');
+        return redirect()->route('workouts.show' , $workout);
     }
 
     /**
