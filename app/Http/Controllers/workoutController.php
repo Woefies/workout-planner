@@ -53,10 +53,13 @@ class workoutController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(workout $workout)
+    public function show(Request $request, Workout $workout)
     {
+        $workoutPlanId = $request->input('workout_plan_id');
+
         return view('workouts.show', [
             'workout' => $workout,
+            'workoutPlanId' => $workoutPlanId, // Pass the workout plan ID to the view
         ]);
     }
 
@@ -96,5 +99,18 @@ class workoutController extends Controller
     {
         $workout->delete();
         return redirect()->route('workouts.index');
+    }
+
+    public function toggleFavorite(Request $request, workout $workout)
+    {
+        $user = auth()->user();
+
+        if ($user->favouriteUserWorkouts()->where('workout_id', $workout->id)->exists()) {
+            $user->favouriteUserWorkouts()->detach($workout->id);
+        } else {
+            $user->favouriteUserWorkouts()->attach($workout->id);
+        }
+
+        return redirect()->route('workouts.index', $workout);
     }
 }

@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-<!-- add the workout through foreach -->
+
 @section('content')
     <!-- create new workout button -->
     <div class="container">
@@ -21,7 +21,8 @@
                         <div class="card-body">
                             <p>{{ $workout->description }}</p>
                             <a href="{{ route('workouts.show', $workout->id) }}" class="btn btn-primary">View</a>
-                            @if(Auth::user()->id == $workout->user_id)
+                            @auth
+                            @if(Auth::user()->id === $workout->user_id || Auth::user()-> is_admin == 1 )
                                 <!-- edit button -->
                                 <a href="{{ route('workouts.edit', $workout->id) }}" class="btn btn-primary">Edit</a>
                                 <!-- delete button -->
@@ -31,6 +32,22 @@
                                     <button type="submit" class="btn btn-danger">Delete</button>
                                 </form>
                             @endif
+                            @endauth
+                            @if(auth()->check())
+                                @if(Auth::user()->favouriteUserWorkouts->contains($workout))
+                                    <form action="{{ route('workouts.toggleFavorite', $workout->id) }}" method="POST">
+                                        @csrf
+                                        <button class="button is-warning" type="submit">Un-Favorite</button>
+                                    </form>
+                                @else
+                                    <form action="{{ route('workouts.toggleFavorite', $workout->id) }}" method="POST">
+                                        @csrf
+                                        <button type="submit" class="btn btn-primary">Favourite</button>
+                                    </form>
+                                @endif
+                            @endif
+
+
                         </div>
                     </div>
                 @endforeach

@@ -42,4 +42,16 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    /**
+     * Get the user_workout that are favourites of this user.
+     */
+    public function favouriteUserWorkouts(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    {
+        return $this->belongsToMany(Workout::class, 'user_workouts', 'user_id', 'workout_id')->withTimestamps();
+    }
+
+    public function workout() {
+        return $this->belongsTo(Workout::class);
+    }
 }

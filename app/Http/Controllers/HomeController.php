@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Workout;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -23,6 +24,8 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        return view('home', [
+            'workouts' => Workout::all(),
+        ]);
     }
 }

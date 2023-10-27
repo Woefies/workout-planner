@@ -13,6 +13,8 @@
                         <p>Sets: {{ $workout->sets }}</p>
                         <p>Reps: {{ $workout->reps }}</p>
                         <p>Weight: {{ $workout->weight }}</p>
+                        @auth
+                            @if(Auth::user()->id === $workout->user_id || Auth::user()-> is_admin == 1 )
                         <!-- edit button -->
                         <a href="{{ route('workouts.edit', $workout->id) }}" class="btn btn-primary">Edit</a>
                         <!-- delete button -->
@@ -21,9 +23,14 @@
                             @method('DELETE')
                             <button type="submit" class="btn btn-danger">Delete</button>
                         </form>
+                            @endif
+                        @endauth
 
                         <!-- return to index -->
-                        <a href="{{ route('workouts.index') }}" class="btn btn-primary">Back</a>
+                        <a href="{{ route('workouts.index') }}" class="btn btn-primary">back to workouts</a>
+                        @if(isset($workoutPlanId))
+                            <a href="{{ route('workout_plans.show', ['workout_plan' => $workoutPlanId]) }}">Back to Workout Plan</a>
+                        @endif
                     </div>
                 </div>
             </div>

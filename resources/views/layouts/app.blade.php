@@ -34,7 +34,7 @@
                             <a class="nav-link" href="{{ route('workouts.index') }}">Workouts</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('user_workouts.index') }}">Workout Plans</a>
+                            <a class="nav-link" href="{{ route('workout_plans.index') }}">Workout Plans</a>
                         </li>
                     </ul>
 

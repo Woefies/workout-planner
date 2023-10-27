@@ -32,20 +32,19 @@ class Workout extends Model
         'updated_at' => 'datetime',
     ];
 
-    /**
-     * Get the users that have this workout.
-     */
-    public function users()
-    {
-        return $this->belongsToMany(User::class);
+    public function user() {
+        return $this->belongsTo(User::class);
     }
 
     /**
-     * Get the userworkouts that have this workout.
+     * Get the workout_plans that have this workout.
      */
-    public function user_workouts()
+    public function workout_plans()
     {
-        return $this->hasMany(User_workout::class);
+        return $this->belongsToMany(Workout_plans::class, 'workout_plan_workout');
     }
+
+
+
 
 }

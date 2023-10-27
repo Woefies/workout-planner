@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class User_workout extends Model
+class Workout_plans extends Model
 {
     use HasFactory;
 
@@ -17,8 +17,6 @@ class User_workout extends Model
     protected $fillable = [
         'name',
         'description',
-        'user_id',
-        'workout_id'
     ];
 
     /**
@@ -32,18 +30,12 @@ class User_workout extends Model
     ];
 
     /**
-     * Get the user that has this workout.
-     */
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
-
-/**
-     * Get the workout that has this user.
+     * Get the workout that has this workout plan.
      */
     public function workout()
     {
-        return $this->belongsTo(Workout::class);
+        return $this->belongsToMany(Workout::class, 'workout_plan_workout');
     }
+
+
 }
