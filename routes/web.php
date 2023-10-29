@@ -20,8 +20,6 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-Route::get('/workouts/{workout}', 'WorkoutController@show')->name('workouts.show');
-Route::resource('workouts', \App\Http\Controllers\workoutController::class);
 Route::post('/workouts/{workout}', [\App\Http\Controllers\workoutController::class, 'toggleFavorite'])->name('workouts.toggleFavorite');
-//Route::resource('user_workouts', \App\Http\Controllers\UserWorkoutController::class);
 Route::resource('workout_plans', \App\Http\Controllers\WorkoutPlansController::class);
+Route::resource('workouts', \App\Http\Controllers\workoutController::class);

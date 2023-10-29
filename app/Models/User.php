@@ -52,6 +52,6 @@ class User extends Authenticatable
     }
 
     public function workout() {
-        return $this->belongsTo(Workout::class);
+        return $this->belongsToMany(Workout::class, 'user_workouts');
     }
 }

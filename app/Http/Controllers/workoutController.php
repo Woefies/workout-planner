@@ -29,7 +29,10 @@ class workoutController extends Controller
      */
     public function create()
     {
-        return view('workouts.create');
+        return view('workouts.create', [
+            'workouts' => new Workout()
+        ]
+        );
     }
 
     /**
@@ -45,7 +48,16 @@ class workoutController extends Controller
              'weight' => 'required'
         ]);
 
-        Workout::create($request->all());
+        $workout = new Workout();
+        $workout->name = $request->input('name');
+        $workout->description = $request->input('description');
+        $workout->sets = $request->input('sets');
+        $workout->reps = $request->input('reps');
+        $workout->weight = $request->input('weight');
+        $workout->save();
+
+        $workout->user()->attach(auth()->user()->id);
+
 
         return redirect()->route('workouts.index');
     }

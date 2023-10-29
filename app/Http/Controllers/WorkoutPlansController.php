@@ -72,23 +72,35 @@ class WorkoutPlansController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Workout_plans $workout_plans, Workout $workout)
+    public function edit(Workout_plans $workout_plan)
     {
+        $workout_plan = $workout_plan->with('workout')->find($workout_plan->id);
+
         return view('workout_plans.edit', [
-            'workout_plans' => $workout_plans,
-            'workout' => $workout,
+            'workout_plans' => $workout_plan,
+            'workouts' => $workout_plan->workout,
+
         ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Workout_plans $workout_plans, Workout $workout)
+    public function update(Request $request, Workout_plans $workout_plans)
     {
-        return view('workout_plans.index', [
-            'workout_plans' => $workout_plans,
-            'workout' => $workout,
+        $request->validate([
+            'name' => 'required',
+            'description' => 'required',
+            'workouts' => 'array',
         ]);
+
+        $workout_plans->name = $request->input('name');
+        $workout_plans->description = $request->input('description');
+        $workout_plans->update();
+
+        $workout_plans->workout()->sync($request->input('workouts'));
+
+        return redirect()->route('workout_plans.index', $workout_plans);
     }
 
     /**
@@ -96,6 +108,7 @@ class WorkoutPlansController extends Controller
      */
     public function destroy(Workout_plans $workout_plans)
     {
+        $workout_plans->workout()->detach();
         $workout_plans->delete();
 
         return redirect()->route('workout_plans.index');

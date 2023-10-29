@@ -18,7 +18,8 @@
                     <div class="card-body">
                         <p>{{ $workout_plan->description }}</p>
                         <a href="{{ route('workout_plans.show', $workout_plan->id) }}" class="btn btn-primary">View</a>
-
+                        @auth
+                            @if(Auth::user()->id === $workout_plan->user_id || Auth::user()-> is_admin == 1 )
                         <a href="{{ route('workout_plans.edit', $workout_plan->id) }}" class="btn btn-primary">Edit</a>
 
                         <form action="{{ route('workout_plans.destroy', $workout_plan->id) }}" method="POST">
@@ -26,6 +27,8 @@
                             @method('DELETE')
                             <button type="submit" class="btn btn-danger">Delete</button>
                         </form>
+                                @endif
+                            @endauth
 
                     </div>
                 </div>
