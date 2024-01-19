@@ -21,5 +21,5 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::post('/workouts/{workout}', [\App\Http\Controllers\workoutController::class, 'toggleFavorite'])->name('workouts.toggleFavorite');
-Route::resource('workout_plans', \App\Http\Controllers\WorkoutPlansController::class);
+Route::resource('workout_plans', \App\Http\Controllers\WorkoutPlanController::class);
 Route::resource('workouts', \App\Http\Controllers\workoutController::class);

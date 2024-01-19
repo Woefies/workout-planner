@@ -20,6 +20,7 @@ class Workout extends Model
         'sets',
         'reps',
         'weight',
+        'user_id',
     ];
 
     /**
@@ -39,9 +40,9 @@ class Workout extends Model
     /**
      * Get the workout_plans that have this workout.
      */
-    public function workout_plans()
+    public function workoutplan()
     {
-        return $this->belongsToMany(Workout_plans::class, 'workout_plan_workout');
+        return $this->belongsToMany(WorkoutPlan::class, 'workout_plan_workout');
     }
 
 

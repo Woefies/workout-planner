@@ -8,13 +8,14 @@
                     <li>{{ $error }}</li>
                 @endforeach
             </ul>
-        </div>v
+        </div>
     @endif
 
     <!-- create a new workout -->
     <h1>Create a new workout</h1>
     <form action="{{ route('workouts.store') }}" method="POST">
         @csrf
+        <input type="hidden" name="user_id" id="user_id" value="{{$user->id}}">
         <div class="form-group">
             <label for="name">Name</label>
             <input type="text" name="name" value="{{ old('name') }}" class="form-control">

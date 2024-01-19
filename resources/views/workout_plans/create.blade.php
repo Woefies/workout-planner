@@ -16,6 +16,7 @@
     <h1>Create a new workout plan</h1>
     <form action="{{ route('workout_plans.store') }}" method="POST">
         @csrf
+        <input type="hidden" name="user_id" id="user_id" value="{{$user->id}}">
         <div class="form-group">
             <label for="name">Workout Plan Name</label>
             <input type="text" name="name" value="{{ old('name') }}" class="form-control">

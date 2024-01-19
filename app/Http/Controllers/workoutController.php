@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Workout;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class workoutController extends Controller
 {
@@ -30,7 +31,8 @@ class workoutController extends Controller
     public function create()
     {
         return view('workouts.create', [
-            'workouts' => new Workout()
+            'workouts' => new Workout(),
+                'user' => Auth::user(),
         ]
         );
     }
@@ -45,7 +47,8 @@ class workoutController extends Controller
             'description' => 'required',
              'sets' => 'required',
              'reps' => 'required',
-             'weight' => 'required'
+             'weight' => 'required',
+             'user_id' => 'required'
         ]);
 
         $workout = new Workout();
@@ -54,6 +57,7 @@ class workoutController extends Controller
         $workout->sets = $request->input('sets');
         $workout->reps = $request->input('reps');
         $workout->weight = $request->input('weight');
+        $workout->user_id = $request->input('user_id');
         $workout->save();
 
         $workout->user()->attach(auth()->user()->id);

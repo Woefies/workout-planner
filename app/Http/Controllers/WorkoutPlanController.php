@@ -3,10 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Workout;
-use App\Models\Workout_plans;
+use App\Models\WorkoutPlan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
-class WorkoutPlansController extends Controller
+class WorkoutPlanController extends Controller
 {
 
     public function __construct()
@@ -20,7 +21,7 @@ class WorkoutPlansController extends Controller
     public function index()
     {
         return view('workout_plans.index', [
-            'workout_plans' => Workout_plans::all(),
+            'workout_plans' => WorkoutPlan::all(),
             'workouts' => Workout::all(),
         ]);
     }
@@ -31,8 +32,9 @@ class WorkoutPlansController extends Controller
     public function create()
     {
         return view('workout_plans.create', [
-            'workout_plans' => new Workout_plans(),
-            'workouts' => Workout::all()
+            'workout_plans' => new WorkoutPlan(),
+            'workouts' => Workout::all(),
+                'user' => Auth::user(),
         ]
     );
     }
@@ -46,11 +48,13 @@ class WorkoutPlansController extends Controller
                 'name' => 'required',
                 'description' => 'required',
                 'workouts' => 'array',
+                'user_id' => 'required'
             ]);
 
-            $workout_plans = new Workout_plans();
+            $workout_plans = new WorkoutPlan();
             $workout_plans->name = $request->input('name');
             $workout_plans->description = $request->input('description');
+            $workout_plans->user_id = $request->input('user_id');
             $workout_plans->save();
 
             $workout_plans->workout()->attach($request->input('workouts'));
@@ -61,7 +65,7 @@ class WorkoutPlansController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Workout_plans $workout_plan, Workout $workout)
+    public function show(WorkoutPlan $workout_plan, Workout $workout)
     {
         return view('workout_plans.show', [
             'workout_plans' => $workout_plan,
@@ -72,7 +76,7 @@ class WorkoutPlansController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Workout_plans $workout_plan)
+    public function edit(WorkoutPlan $workout_plan)
     {
         $workout_plan = $workout_plan->with('workout')->find($workout_plan->id);
 
@@ -86,12 +90,13 @@ class WorkoutPlansController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Workout_plans $workout_plans)
+    public function update(Request $request, WorkoutPlan $workout_plans)
     {
         $request->validate([
             'name' => 'required',
             'description' => 'required',
             'workouts' => 'array',
+
         ]);
 
         $workout_plans->name = $request->input('name');
@@ -106,7 +111,7 @@ class WorkoutPlansController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Workout_plans $workout_plans)
+    public function destroy(WorkoutPlan $workout_plans)
     {
         $workout_plans->workout()->detach();
         $workout_plans->delete();

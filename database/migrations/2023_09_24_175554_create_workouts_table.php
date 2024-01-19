@@ -18,7 +18,10 @@ return new class extends Migration
             $table->integer('sets');
             $table->integer('reps');
             $table->integer('weight');
+            $table->unsignedBigInteger('user_id');
             $table->timestamps();
+
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Workout_plans extends Model
+class WorkoutPlan extends Model
 {
     use HasFactory;
 
@@ -17,6 +17,7 @@ class Workout_plans extends Model
     protected $fillable = [
         'name',
         'description',
+        'user_id'
     ];
 
     /**
@@ -25,6 +26,7 @@ class Workout_plans extends Model
      * @var array<string, string>
      */
     protected $casts = [
+        'workouts' => 'array',
         'created_at' => 'datetime',
         'updated_at' => 'datetime'
     ];
