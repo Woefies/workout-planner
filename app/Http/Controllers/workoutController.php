@@ -18,10 +18,35 @@ class workoutController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
+        $sortBy = $request->input('sort_by', 'created_at');
+        $sortOrder = $request->input('sort_order', 'desc');
+        $query = $request->input('query', '');
+
+        if (Auth::check()) {
+            $user = Auth::user();
+            $workoutQuery = $user->is_admin ? Workout::query() : Workout::where('active', true);
+        } else {
+            $workoutQuery = Workout::where('active', true);
+        }
+
+        //apply the name and description filter
+        $workoutQuery->where(function ($queryBuilder) use ($query) {
+            $queryBuilder->where('name', 'like', '%' . $query . '%')
+                ->orWhere('description', 'like', '%' . $query . '%');
+        });
+
+        //sort oder
+        $workoutQuery->orderBy($sortBy, $sortOrder);
+
+        $workouts = $workoutQuery->get();
+
         return view('workouts.index', [
-            'workouts' => Workout::all(),
+            'workouts' => $workouts,
+            'query' => $query,
+            'sort_by' => $sortBy,
+            'sort_order' => $sortOrder,
         ]);
     }
 
@@ -30,11 +55,22 @@ class workoutController extends Controller
      */
     public function create()
     {
-        return view('workouts.create', [
-            'workouts' => new Workout(),
-                'user' => Auth::user(),
-        ]
-        );
+
+        $user = Auth::user();
+        $favoriteWorkoutCount = $user->favouriteUserWorkouts()->count();
+
+        if ($favoriteWorkoutCount >= 3 || $user->is_admin) {
+            return view('workouts.create', [
+                    'workouts' => new Workout(),
+                    'user' => Auth::user(),
+                ]
+            );
+        } else {
+            return redirect()->route('workouts.index')
+                ->with('error', 'You need at least 3 favourite workouts before making one')
+                ->with('showPopup', true);
+
+        }
     }
 
     /**
@@ -102,8 +138,13 @@ class workoutController extends Controller
              'weight' => 'required'
         ]);
 
-        $workout = Workout::find($workout->id);
-        $workout->update($request->all());
+        $workout->name = $request->input('name');
+        $workout->description = $request->input('description');
+        $workout->sets = $request->input('sets');
+        $workout->reps = $request->input('reps');
+        $workout->weight = $request->input('weight');
+        $workout->active = $request->has('active');
+        $workout->save();
 
         return redirect()->route('workouts.show' , $workout);
     }
@@ -129,4 +170,22 @@ class workoutController extends Controller
 
         return redirect()->route('workouts.index', $workout);
     }
+
+    public function toggleActive(Request $request, Workout $workout)
+    {
+        $workout->active = $request->has('active');
+        $workout->save();
+
+        return redirect()->route('workouts.index');
+    }
+
+public function active(Workout $workout)
+    {
+        $request = new Request();
+        $workout->active = $request->has('active');
+        $workout->save();
+
+        return redirect()->route('workouts.index');
+    }
+
 }

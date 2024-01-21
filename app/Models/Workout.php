@@ -20,6 +20,7 @@ class Workout extends Model
         'sets',
         'reps',
         'weight',
+        'active',
         'user_id',
     ];
 

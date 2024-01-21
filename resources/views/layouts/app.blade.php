@@ -15,6 +15,8 @@
 
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
 </head>
 <body>
     <div id="app">
@@ -78,6 +80,15 @@
         </nav>
 
         <main class="py-4">
+            @if(session('showPopup'))
+                <script>
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: '{{ session('error') }}',
+                    });
+                </script>
+            @endif
             @yield('content')
         </main>
     </div>

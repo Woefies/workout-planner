@@ -25,6 +25,10 @@
             <input type="number" name="weight" value="{{ $workout->weight }}" class="form-control">
         </div>
         <div class="form-group">
+            <label for="active">Active:</label>
+            <input type="checkbox" name="active" {{ $workout->active ? 'checked' : '' }}>
+        </div>
+        <div class="form-group">
             <button type="submit" class="btn btn-primary">update</button>
         </div>
         <div class=""></div>

@@ -18,6 +18,7 @@ return new class extends Migration
             $table->integer('sets');
             $table->integer('reps');
             $table->integer('weight');
+            $table->boolean('active')->default(true);
             $table->unsignedBigInteger('user_id');
             $table->timestamps();
 
