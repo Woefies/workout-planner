@@ -78,12 +78,15 @@ class WorkoutPlanController extends Controller
      */
     public function edit(WorkoutPlan $workout_plan)
     {
+        if (Auth::user()->id !== $workout_plan->user_id) {
+            return redirect()->route('workout_plans.index')->with('error', 'You do not have permission to edit this video.');
+        }
+
         $workout_plan = $workout_plan->with('workout')->find($workout_plan->id);
 
         return view('workout_plans.edit', [
             'workout_plans' => $workout_plan,
             'workouts' => $workout_plan->workout,
-
         ]);
     }
 
@@ -92,6 +95,10 @@ class WorkoutPlanController extends Controller
      */
     public function update(Request $request, WorkoutPlan $workout_plans)
     {
+        if (Auth::user()->id !== $workout_plans->user_id) {
+            return redirect()->route('workout_plans.index')->with('error', 'You do not have permission to edit this video.');
+        }
+
         $request->validate([
             'name' => 'required',
             'description' => 'required',

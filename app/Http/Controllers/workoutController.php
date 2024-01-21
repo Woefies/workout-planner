@@ -108,10 +108,12 @@ class workoutController extends Controller
     public function show(Request $request, Workout $workout)
     {
         $workoutPlanId = $request->input('workout_plan_id');
+        $userId = $request->input('userId');
 
         return view('workouts.show', [
             'workout' => $workout,
             'workoutPlanId' => $workoutPlanId, // Pass the workout plan ID to the view
+            'userId' => $userId, // Pass the user ID to the view
         ]);
     }
 
@@ -120,6 +122,10 @@ class workoutController extends Controller
      */
     public function edit(workout $workout)
     {
+        if (Auth::user()->id !== $workout->user_id) {
+            return redirect()->route('workouts.index')->with('error', 'You do not have permission to edit this video.');
+        }
+
         return view('workouts.edit', [
             'workout' => $workout,
         ]);
@@ -130,6 +136,10 @@ class workoutController extends Controller
      */
     public function update(Request $request, workout $workout)
     {
+        if (Auth::user()->id !== $workout->user_id) {
+            return redirect()->route('workouts.index')->with('error', 'You do not have permission to edit this video.');
+        }
+
         $request->validate([
             'name' => 'required',
             'description' => 'required',

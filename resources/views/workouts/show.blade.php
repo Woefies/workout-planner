@@ -31,6 +31,9 @@
                         @if(isset($workoutPlanId))
                             <a href="{{ route('workout_plans.show', ['workout_plan' => $workoutPlanId]) }}">Back to Workout Plan</a>
                         @endif
+                        @if(isset($userId))
+                            <a href="{{ route('user.index') }}">Back to profile</a>
+                        @endif
                     </div>
                 </div>
             </div>

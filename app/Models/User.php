@@ -51,7 +51,8 @@ class User extends Authenticatable
         return $this->belongsToMany(Workout::class, 'user_workouts', 'user_id', 'workout_id')->withTimestamps();
     }
 
-    public function workout() {
+    public function workout(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    {
         return $this->belongsToMany(Workout::class, 'user_workouts');
     }
 }
